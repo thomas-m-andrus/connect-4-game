@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@connect-4-game/types": ["libs/types/src/index.ts"]
+      "@connect-4-game/types": ["libs/types/src/index.ts"],
+      "@connect-4-game/game-logic": ["libs/game-logic/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
