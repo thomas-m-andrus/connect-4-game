@@ -26,3 +26,7 @@ export interface GameErrorMessage {
   type: GameMessage.ERROR;
   message: string;
 }
+
+export type Row = number;
+export type Column = number;
+export type Coordinate = [Column, Row];

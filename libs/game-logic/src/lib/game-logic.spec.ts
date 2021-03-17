@@ -5,6 +5,7 @@ import {
   fourByFourBoardIsFilled,
   takeTurnInFourByFourGame,
   createEmptyFourByFourBoard,
+  getValidOrbitsForFourByFour,
 } from './game-logic';
 import {
   ColOrbit,
@@ -113,5 +114,21 @@ describe('gameLogic', () => {
         });
       }
     );
+    describe.each`
+      input     | expected                                                                                                                                                                                                                                                                                                                                                                                                                                            | len
+      ${[0, 0]} | ${{ [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [1, 0], [`${ColOrbit.RIGHT}______${RowOrbit.TOP}`]: [1, 1], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [0, 1] }}                                                                                                                                                                                                                                                                               | ${3}
+      ${[3, 0]} | ${{ [`${ColOrbit.LEFT}______${RowOrbit.MIDDLE}`]: [2, 0], [`${ColOrbit.LEFT}______${RowOrbit.TOP}`]: [2, 1], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [3, 1] }}                                                                                                                                                                                                                                                                                 | ${3}
+      ${[0, 3]} | ${{ [`${ColOrbit.MIDDLE}______${RowOrbit.BOTTOM}`]: [0, 2], [`${ColOrbit.RIGHT}______${RowOrbit.BOTTOM}`]: [1, 2], [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [1, 3] }}                                                                                                                                                                                                                                                                         | ${3}
+      ${[3, 3]} | ${{ [`${ColOrbit.LEFT}______${RowOrbit.MIDDLE}`]: [2, 3], [`${ColOrbit.LEFT}______${RowOrbit.BOTTOM}`]: [2, 2], [`${ColOrbit.MIDDLE}______${RowOrbit.BOTTOM}`]: [3, 2] }}                                                                                                                                                                                                                                                                           | ${3}
+      ${[2, 2]} | ${{ [`${ColOrbit.LEFT}______${RowOrbit.BOTTOM}`]: [1, 1], [`${ColOrbit.LEFT}______${RowOrbit.MIDDLE}`]: [1, 2], [`${ColOrbit.LEFT}______${RowOrbit.TOP}`]: [1, 3], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [2, 3], [`${ColOrbit.MIDDLE}______${RowOrbit.BOTTOM}`]: [2, 1], [`${ColOrbit.RIGHT}______${RowOrbit.BOTTOM}`]: [3, 1], [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [3, 2], [`${ColOrbit.RIGHT}______${RowOrbit.TOP}`]: [3, 3] }} | ${8}
+    `('getValidOrbitsForFourByFour', ({ input, expected, len }) => {
+      it(`should return ${JSON.stringify(
+        expected
+      )} when input is ${input}`, () => {
+        const result = getValidOrbitsForFourByFour(input);
+        expect(Object.keys(result).length).toBe(len);
+        expect(result).toEqual(expected);
+      });
+    });
   });
 });

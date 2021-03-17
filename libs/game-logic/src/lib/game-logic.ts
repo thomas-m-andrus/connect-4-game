@@ -5,6 +5,7 @@ import {
   RowOrbit,
   GameMessage,
   GameErrorMessage,
+  Coordinate,
 } from '@connect-4-game/types';
 
 export const getColumnLocation = (orbit: ColOrbit, start: number): number => {
@@ -82,3 +83,37 @@ export const takeTurn = (
 };
 
 export const takeTurnInFourByFourGame = takeTurn(4, 4);
+
+/**
+ *
+ * @param rows
+ * @param columns
+ * @returns
+ */
+export const getValidOrbits = (
+  rows: number,
+  columns: number
+): ((origin: Coordinate) => Record<string, Coordinate>) => {
+  return (origin: Coordinate) => {
+    return Object.keys(ColOrbit).reduce((firstLvlAcc, colKey) => {
+      return {
+        ...firstLvlAcc,
+        ...Object.keys(RowOrbit).reduce((secondLvlAcc, rowKey) => {
+          const colVal = ColOrbit[colKey];
+          const rowVal = RowOrbit[rowKey];
+          const col = getColumnLocation(colVal, origin[0]);
+          const row = getRowLocation(rowVal, origin[1]);
+          return col >= 0 &&
+            row >= 0 &&
+            col < columns &&
+            row < rows &&
+            ![colKey, rowKey].every((key) => key === 'MIDDLE')
+            ? { ...secondLvlAcc, [`${colVal}______${rowVal}`]: [col, row] }
+            : { ...secondLvlAcc };
+        }, {}),
+      };
+    }, {});
+  };
+};
+
+export const getValidOrbitsForFourByFour = getValidOrbits(4, 4);
