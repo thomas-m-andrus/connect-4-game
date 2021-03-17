@@ -22,3 +22,27 @@ export const getRowLocation = (orbit: RowOrbit, start: number): number => {
   };
   return start + moveTo[orbit];
 };
+
+export const boardIsFilled = (
+  rows: number,
+  columns: number
+): ((board: Board) => boolean) => {
+  return (board: Board) => {
+    const boardSection = board.slice(0, columns);
+    return !boardSection.some((col) =>
+      col.slice(0, rows).includes(OccupiedState.NONE)
+    );
+  };
+};
+
+export const fourByFourBoardIsFilled = boardIsFilled(4, 4);
+
+export const createPopulatedBoard = (
+  rows: number,
+  columns: number,
+  populated: OccupiedState
+): Board => {
+  return Array.from({ length: columns }, () =>
+    Array.from({ length: rows }, () => populated)
+  );
+};
