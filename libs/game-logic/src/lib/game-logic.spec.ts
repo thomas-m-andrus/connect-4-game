@@ -80,22 +80,38 @@ describe('gameLogic', () => {
         }
       );
     });
-    describe('success scenarios', () => {
-      let board = createEmptyFourByFourBoard();
-      it('', () => {
-        board = takeTurnInFourByFourGame(
-          board,
-          0,
-          OccupiedState.PLAYER_1
-        ) as Board;
-
-        expect(board).toStrictEqual([
-          ['PLAYER_1', 'NONE', 'NONE', 'NONE'],
-          ['NONE', 'NONE', 'NONE', 'NONE'],
-          ['NONE', 'NONE', 'NONE', 'NONE'],
-          ['NONE', 'NONE', 'NONE', 'NONE'],
-        ]);
-      });
-    });
+    let board = createEmptyFourByFourBoard();
+    let testNumber = 1;
+    describe.each`
+      space | player                    | expected
+      ${0}  | ${OccupiedState.PLAYER_1} | ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
+      ${2}  | ${OccupiedState.PLAYER_2} | ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
+      ${0}  | ${OccupiedState.PLAYER_1} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
+      ${2}  | ${OccupiedState.PLAYER_2} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
+      ${1}  | ${OccupiedState.PLAYER_1} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
+      ${2}  | ${OccupiedState.PLAYER_2} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'PLAYER_2', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
+      ${1}  | ${OccupiedState.PLAYER_1} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'PLAYER_2', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
+      ${2}  | ${OccupiedState.PLAYER_2} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'PLAYER_2', 'PLAYER_2'], ['NONE', 'NONE', 'NONE', 'NONE']]}
+    `(
+      'success scenarios',
+      ({
+        space,
+        player,
+        expected,
+      }: {
+        expected: Board;
+        space: number;
+        player: OccupiedState.PLAYER_1 | OccupiedState.PLAYER_2;
+      }) => {
+        it(`Test ${testNumber++}: should return \n             ${JSON.stringify(
+          expected
+        )}\n             when the board was\n             ${JSON.stringify(
+          board
+        )}\n             and space was ${space} and player was ${player}`, () => {
+          board = takeTurnInFourByFourGame(board, space, player) as Board;
+          expect(board).toStrictEqual(expected);
+        });
+      }
+    );
   });
 });
