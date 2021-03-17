@@ -3,6 +3,8 @@ import {
   OccupiedState,
   ColOrbit,
   RowOrbit,
+  GameMessage,
+  GameErrorMessage,
 } from '@connect-4-game/types';
 
 export const getColumnLocation = (orbit: ColOrbit, start: number): number => {
@@ -46,3 +48,37 @@ export const createPopulatedBoard = (
     Array.from({ length: rows }, () => populated)
   );
 };
+
+export const createEmptyFourByFourBoard = (): Board =>
+  createPopulatedBoard(4, 4, OccupiedState.NONE);
+
+export const takeTurn = (
+  rows: number,
+  columns: number
+): ((
+  board: Board,
+  col: number,
+  player: OccupiedState.PLAYER_1 | OccupiedState.PLAYER_2
+) => Board | GameErrorMessage) => {
+  return (
+    board: Board,
+    col: number,
+    player: OccupiedState.PLAYER_1 | OccupiedState.PLAYER_2
+  ): Board | GameErrorMessage => {
+    if (col < 0 || col >= columns)
+      return { type: GameMessage.ERROR, message: 'Invalid attempt' };
+    const columnUpdate = [...board[col].slice(0, rows)];
+    const updatedLocation = columnUpdate.indexOf(OccupiedState.NONE);
+    if (!updatedLocation)
+      return {
+        type: GameMessage.ERROR,
+        message: 'No empty spaces available in chosen column',
+      };
+    columnUpdate[updatedLocation] = player;
+    const updatedBoard = [...board];
+    updatedBoard[col] = columnUpdate;
+    return updatedBoard;
+  };
+};
+
+export const takeTurnInFourByFourGame = takeTurn(4, 4);

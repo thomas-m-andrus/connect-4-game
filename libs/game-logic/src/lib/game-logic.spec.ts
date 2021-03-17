@@ -1,11 +1,19 @@
 import {
   getColumnLocation,
   getRowLocation,
-  boardIsFilled,
   createPopulatedBoard,
   fourByFourBoardIsFilled,
+  takeTurnInFourByFourGame,
+  createEmptyFourByFourBoard,
 } from './game-logic';
-import { ColOrbit, RowOrbit, OccupiedState } from '@connect-4-game/types';
+import {
+  ColOrbit,
+  RowOrbit,
+  OccupiedState,
+  GameMessage,
+  Board,
+  GameErrorMessage,
+} from '@connect-4-game/types';
 
 describe('gameLogic', () => {
   describe('getColumnLocation', () => {
@@ -50,5 +58,27 @@ describe('gameLogic', () => {
         expect(result).toBe(true);
       }
     );
+  });
+  describe('takeTurnInFourByFourGame', () => {
+    describe('error scenarios', () => {
+      it.each`
+        input                                                                                                                                                                        | inputStr                                                                              | expected                                                                              | expectedStr
+        ${[createEmptyFourByFourBoard(), -1, OccupiedState.PLAYER_1]}                                                                                                                | ${'board is four by four and empty and -1 as turn space.'}                            | ${{ type: GameMessage.ERROR, message: 'Invalid attempt' }}                            | ${`'Invalid attempt'`}
+        ${[createEmptyFourByFourBoard(), 4, OccupiedState.PLAYER_1]}                                                                                                                 | ${'board is four by four and empty and 4 as turn space.'}                             | ${{ type: GameMessage.ERROR, message: 'Invalid attempt' }}                            | ${`'Invalid attempt'`}
+        ${[[[OccupiedState.PLAYER_1, OccupiedState.PLAYER_2, OccupiedState.PLAYER_2, OccupiedState.PLAYER_1], ...createEmptyFourByFourBoard().slice(1)], 1, OccupiedState.PLAYER_1]} | ${'board is four by four and empty except for the first column and 0 as turn space.'} | ${{ type: GameMessage.ERROR, message: 'No empty spaces available in chosen column' }} | ${`No empty spaces available in chosen column`}
+      `(
+        'should return error message of $expectedStr when $inputStr',
+        ({
+          input,
+          expected,
+        }: {
+          input: [Board, number, OccupiedState.PLAYER_1];
+          expected: GameErrorMessage;
+        }) => {
+          const result = takeTurnInFourByFourGame(...input);
+          expect(result).toEqual(expected);
+        }
+      );
+    });
   });
 });

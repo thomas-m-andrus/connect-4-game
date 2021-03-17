@@ -17,3 +17,12 @@ export enum OccupiedState {
 }
 
 export type Board = OccupiedState[][];
+
+export enum GameMessage {
+  ERROR = 'ERROR',
+}
+
+export interface GameErrorMessage {
+  type: GameMessage.ERROR;
+  message: string;
+}
