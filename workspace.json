@@ -1,23 +1,12 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
+  "cli": { "defaultCollection": "@nrwl/react" },
   "defaultProject": "connect-4",
   "generators": {
     "@nrwl/react": {
-      "application": {
-        "style": "scss",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "scss"
-      },
-      "library": {
-        "style": "scss",
-        "linter": "eslint"
-      }
+      "application": { "style": "scss", "linter": "eslint", "babel": true },
+      "component": { "style": "scss" },
+      "library": { "style": "scss", "linter": "eslint" }
     }
   },
   "projects": {
@@ -70,13 +59,9 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "connect-4:build"
-          },
+          "options": { "buildTarget": "connect-4:build" },
           "configurations": {
-            "production": {
-              "buildTarget": "connect-4:build:production"
-            }
+            "production": { "buildTarget": "connect-4:build:production" }
           }
         },
         "lint": {
@@ -108,16 +93,23 @@
             "devServerTarget": "connect-4:serve"
           },
           "configurations": {
-            "production": {
-              "devServerTarget": "connect-4:serve:production"
-            }
+            "production": { "devServerTarget": "connect-4:serve:production" }
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/connect-4-e2e/**/*.{js,ts}"]
-          }
+          "options": { "lintFilePatterns": ["apps/connect-4-e2e/**/*.{js,ts}"] }
+        }
+      }
+    },
+    "types": {
+      "root": "libs/types",
+      "sourceRoot": "libs/types/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/types/**/*.ts"] }
         }
       }
     }

@@ -1,29 +1,19 @@
 {
   "implicitDependencies": {
     "workspace.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     "tsconfig.base.json": "*",
     "tslint.json": "*",
     ".eslintrc.json": "*",
     "nx.json": "*"
   },
-  "affected": {
-    "defaultBase": "master"
-  },
+  "affected": { "defaultBase": "master" },
   "npmScope": "connect-4-game",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ],
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
         "accessToken": "ODhlMDVlOWQtMjRmMC00YjM4LTkyOTgtYzFmMjU5NjM3MDRjfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true
@@ -31,14 +21,8 @@
     }
   },
   "projects": {
-    "connect-4": {
-      "tags": []
-    },
-    "connect-4-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "connect-4"
-      ]
-    }
+    "connect-4": { "tags": [] },
+    "connect-4-e2e": { "tags": [], "implicitDependencies": ["connect-4"] },
+    "types": { "tags": [] }
   }
 }
