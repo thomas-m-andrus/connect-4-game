@@ -65,7 +65,7 @@ describe('gameLogic', () => {
         input                                                                                                                                                                        | inputStr                                                                              | expected                                                                              | expectedStr
         ${[createEmptyFourByFourBoard(), -1, OccupiedState.PLAYER_1]}                                                                                                                | ${'board is four by four and empty and -1 as turn space.'}                            | ${{ type: GameMessage.ERROR, message: 'Invalid attempt' }}                            | ${`'Invalid attempt'`}
         ${[createEmptyFourByFourBoard(), 4, OccupiedState.PLAYER_1]}                                                                                                                 | ${'board is four by four and empty and 4 as turn space.'}                             | ${{ type: GameMessage.ERROR, message: 'Invalid attempt' }}                            | ${`'Invalid attempt'`}
-        ${[[[OccupiedState.PLAYER_1, OccupiedState.PLAYER_2, OccupiedState.PLAYER_2, OccupiedState.PLAYER_1], ...createEmptyFourByFourBoard().slice(1)], 1, OccupiedState.PLAYER_1]} | ${'board is four by four and empty except for the first column and 0 as turn space.'} | ${{ type: GameMessage.ERROR, message: 'No empty spaces available in chosen column' }} | ${`No empty spaces available in chosen column`}
+        ${[[[OccupiedState.PLAYER_1, OccupiedState.PLAYER_2, OccupiedState.PLAYER_2, OccupiedState.PLAYER_1], ...createEmptyFourByFourBoard().slice(1)], 0, OccupiedState.PLAYER_1]} | ${'board is four by four and empty except for the first column and 0 as turn space.'} | ${{ type: GameMessage.ERROR, message: 'No empty spaces available in chosen column' }} | ${`No empty spaces available in chosen column`}
       `(
         'should return error message of $expectedStr when $inputStr',
         ({
@@ -79,6 +79,23 @@ describe('gameLogic', () => {
           expect(result).toEqual(expected);
         }
       );
+    });
+    describe('success scenarios', () => {
+      let board = createEmptyFourByFourBoard();
+      it('', () => {
+        board = takeTurnInFourByFourGame(
+          board,
+          0,
+          OccupiedState.PLAYER_1
+        ) as Board;
+
+        expect(board).toStrictEqual([
+          ['PLAYER_1', 'NONE', 'NONE', 'NONE'],
+          ['NONE', 'NONE', 'NONE', 'NONE'],
+          ['NONE', 'NONE', 'NONE', 'NONE'],
+          ['NONE', 'NONE', 'NONE', 'NONE'],
+        ]);
+      });
     });
   });
 });

@@ -69,7 +69,7 @@ export const takeTurn = (
       return { type: GameMessage.ERROR, message: 'Invalid attempt' };
     const columnUpdate = [...board[col].slice(0, rows)];
     const updatedLocation = columnUpdate.indexOf(OccupiedState.NONE);
-    if (!updatedLocation)
+    if (updatedLocation < 0)
       return {
         type: GameMessage.ERROR,
         message: 'No empty spaces available in chosen column',
