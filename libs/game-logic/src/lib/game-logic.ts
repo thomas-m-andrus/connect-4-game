@@ -84,12 +84,6 @@ export const takeTurn = (
 
 export const takeTurnInFourByFourGame = takeTurn(4, 4);
 
-/**
- *
- * @param rows
- * @param columns
- * @returns
- */
 export const getValidOrbits = (
   rows: number,
   columns: number
@@ -117,3 +111,47 @@ export const getValidOrbits = (
 };
 
 export const getValidOrbitsForFourByFour = getValidOrbits(4, 4);
+
+export const traverseGraphAsLongAsMatching = (
+  rowLimit: number,
+  columnLimit: number,
+  searchLimit?: number
+): ((
+  board: Board,
+  origin: Coordinate,
+  direction: [ColOrbit, RowOrbit]
+) => Coordinate[]) => {
+  return (
+    board: Board,
+    origin: Coordinate,
+    direction: [ColOrbit, RowOrbit]
+  ): Coordinate[] => {
+    const result = [];
+    const match = board[origin[0]][origin[1]];
+    const check = {
+      col: getColumnLocation(direction[0], origin[0]),
+      row: getRowLocation(direction[1], origin[1]),
+    };
+    const isInfinite =
+      direction[0] === ColOrbit.MIDDLE && direction[1] === RowOrbit.MIDDLE;
+    while (
+      !isInfinite &&
+      check.col >= 0 &&
+      check.row >= 0 &&
+      check.col < columnLimit &&
+      check.row < rowLimit &&
+      match === board[check.col][check.row] &&
+      (searchLimit ? result.length < searchLimit : true)
+    ) {
+      result.push([check.col, check.row]);
+      check.col = getColumnLocation(direction[0], check.col);
+      check.row = getRowLocation(direction[1], check.row);
+    }
+    return result;
+  };
+};
+
+export const traverseFourByFourGraphAsLongAsMatching = traverseGraphAsLongAsMatching(
+  4,
+  4
+);

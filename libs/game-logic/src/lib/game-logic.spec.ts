@@ -6,6 +6,7 @@ import {
   takeTurnInFourByFourGame,
   createEmptyFourByFourBoard,
   getValidOrbitsForFourByFour,
+  traverseFourByFourGraphAsLongAsMatching,
 } from './game-logic';
 import {
   ColOrbit,
@@ -130,5 +131,38 @@ describe('gameLogic', () => {
         expect(result).toEqual(expected);
       });
     });
+    describe.each`
+      board                                                                                                                                                       | origin    | direction                             | expected
+      ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'PLAYER_1']]} | ${[0, 0]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[1, 1], [2, 2], [3, 3]]}
+      ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'PLAYER_1']]} | ${[2, 2]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[3, 3]]}
+      ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'PLAYER_1']]} | ${[3, 3]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[]}
+      ${[['NONE', 'NONE', 'NONE', 'PLAYER_1'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE']]} | ${[0, 3]} | ${[ColOrbit.RIGHT, RowOrbit.BOTTOM]}  | ${[[1, 2], [2, 1], [3, 0]]}
+      ${[['NONE', 'NONE', 'NONE', 'PLAYER_1'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE']]} | ${[3, 0]} | ${[ColOrbit.LEFT, RowOrbit.TOP]}      | ${[[2, 1], [1, 2], [0, 3]]}
+      ${[['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'PLAYER_1', 'PLAYER_1'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]} | ${[1, 0]} | ${[ColOrbit.MIDDLE, RowOrbit.TOP]}    | ${[[1, 1], [1, 2], [1, 3]]}
+      ${[['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'PLAYER_1', 'PLAYER_1'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]} | ${[1, 3]} | ${[ColOrbit.MIDDLE, RowOrbit.BOTTOM]} | ${[[1, 2], [1, 1], [1, 0]]}
+      ${[['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'PLAYER_1', 'PLAYER_1'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]} | ${[1, 0]} | ${[ColOrbit.MIDDLE, RowOrbit.MIDDLE]} | ${[]}
+      ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[3, 1]} | ${[ColOrbit.LEFT, RowOrbit.MIDDLE]}   | ${[[2, 1], [1, 1], [0, 1]]}
+      ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[3, 1]} | ${[ColOrbit.LEFT, RowOrbit.MIDDLE]}   | ${[[2, 1], [1, 1], [0, 1]]}
+      ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[0, 1]} | ${[ColOrbit.RIGHT, RowOrbit.MIDDLE]}  | ${[[1, 1], [2, 1], [3, 1]]}
+      ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}     | ${[0, 0]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[1, 1], [2, 2]]}
+    `(
+      'traverseFourByFourGraphAsLongAsMatching',
+      ({ board, origin, direction, expected }) => {
+        it(`should return ${JSON.stringify(
+          expected
+        )} when the board is ${JSON.stringify(
+          board
+        )}, origin is ${JSON.stringify(
+          origin
+        )} and direction is ${JSON.stringify(direction)}`, () => {
+          const result = traverseFourByFourGraphAsLongAsMatching(
+            board,
+            origin,
+            direction
+          );
+          expect(result).toStrictEqual(expected);
+        });
+      }
+    );
   });
 });
