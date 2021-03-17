@@ -15,6 +15,7 @@ import {
   GameMessage,
   Board,
   GameErrorMessage,
+  GameTurnTakenMessage,
 } from '@connect-4-game/types';
 
 describe('gameLogic', () => {
@@ -55,8 +56,8 @@ describe('gameLogic', () => {
     `(
       'should return $expected when input is a four by four matrix filled with $input.',
       () => {
-        const dumb = createPopulatedBoard(4, 4, OccupiedState.PLAYER_1);
-        const result = fourByFourBoardIsFilled(dumb);
+        const board = createPopulatedBoard(4, 4, OccupiedState.PLAYER_1);
+        const result = fourByFourBoardIsFilled(board);
         expect(result).toBe(true);
       }
     );
@@ -86,35 +87,34 @@ describe('gameLogic', () => {
     let testNumber = 1;
     describe.each`
       space | player                    | expected
-      ${0}  | ${OccupiedState.PLAYER_1} | ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
-      ${2}  | ${OccupiedState.PLAYER_2} | ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
-      ${0}  | ${OccupiedState.PLAYER_1} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
-      ${2}  | ${OccupiedState.PLAYER_2} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
-      ${1}  | ${OccupiedState.PLAYER_1} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
-      ${2}  | ${OccupiedState.PLAYER_2} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'PLAYER_2', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
-      ${1}  | ${OccupiedState.PLAYER_1} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'PLAYER_2', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}
-      ${2}  | ${OccupiedState.PLAYER_2} | ${[['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'PLAYER_2', 'PLAYER_2'], ['NONE', 'NONE', 'NONE', 'NONE']]}
-    `(
-      'success scenarios',
-      ({
-        space,
-        player,
-        expected,
-      }: {
-        expected: Board;
-        space: number;
-        player: OccupiedState.PLAYER_1 | OccupiedState.PLAYER_2;
-      }) => {
-        it(`Test ${testNumber++}: should return \n             ${JSON.stringify(
-          expected
-        )}\n             when the board was\n             ${JSON.stringify(
-          board
-        )}\n             and space was ${space} and player was ${player}`, () => {
-          board = takeTurnInFourByFourGame(board, space, player) as Board;
-          expect(board).toStrictEqual(expected);
-        });
-      }
-    );
+      ${0}  | ${OccupiedState.PLAYER_1} | ${{ board: [['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']], coordinate: [0, 0] }}
+      ${2}  | ${OccupiedState.PLAYER_2} | ${{ board: [['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']], coordinate: [2, 0] }}
+      ${0}  | ${OccupiedState.PLAYER_1} | ${{ board: [['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']], coordinate: [0, 1] }}
+      ${2}  | ${OccupiedState.PLAYER_2} | ${{ board: [['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']], coordinate: [2, 1] }}
+      ${1}  | ${OccupiedState.PLAYER_1} | ${{ board: [['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']], coordinate: [1, 0] }}
+      ${2}  | ${OccupiedState.PLAYER_2} | ${{ board: [['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'PLAYER_2', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']], coordinate: [2, 2] }}
+      ${1}  | ${OccupiedState.PLAYER_1} | ${{ board: [['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'PLAYER_2', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']], coordinate: [1, 1] }}
+      ${2}  | ${OccupiedState.PLAYER_2} | ${{ board: [['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_2', 'PLAYER_2', 'PLAYER_2', 'PLAYER_2'], ['NONE', 'NONE', 'NONE', 'NONE']], coordinate: [2, 3] }}
+    `('success scenarios', ({ space, player, expected }) => {
+      it(`Test ${testNumber++}: should return \n             ${JSON.stringify(
+        expected.board
+      )}\n             and updated coordinate of ${JSON.stringify(
+        expected.coordinate
+      )}\n             when the board was\n             ${JSON.stringify(
+        board
+      )}\n             and space was ${space} and player was ${player}`, () => {
+        const result = takeTurnInFourByFourGame(board, space, player);
+        expect((result as GameTurnTakenMessage).board).toStrictEqual(
+          expected.board
+        );
+        expect(
+          (result as GameTurnTakenMessage).coordinateUpdated
+        ).toStrictEqual(expected.coordinate);
+        if (result.type === GameMessage.TURN_TAKEN) {
+          board = result.board;
+        }
+      });
+    });
     describe.each`
       input     | expected                                                                                                                                                                                                                                                                                                                                                                                                                                            | len
       ${[0, 0]} | ${{ [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [1, 0], [`${ColOrbit.RIGHT}______${RowOrbit.TOP}`]: [1, 1], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [0, 1] }}                                                                                                                                                                                                                                                                               | ${3}

@@ -20,11 +20,18 @@ export type Board = OccupiedState[][];
 
 export enum GameMessage {
   ERROR = 'ERROR',
+  TURN_TAKEN = 'TURN_TAKEN',
 }
 
 export interface GameErrorMessage {
   type: GameMessage.ERROR;
   message: string;
+}
+
+export interface GameTurnTakenMessage {
+  type: GameMessage.TURN_TAKEN;
+  board: Board;
+  coordinateUpdated: Coordinate;
 }
 
 export type Row = number;

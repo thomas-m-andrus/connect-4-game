@@ -5,6 +5,7 @@ import {
   RowOrbit,
   GameMessage,
   GameErrorMessage,
+  GameTurnTakenMessage,
   Coordinate,
 } from '@connect-4-game/types';
 
@@ -60,12 +61,12 @@ export const takeTurn = (
   board: Board,
   col: number,
   player: OccupiedState.PLAYER_1 | OccupiedState.PLAYER_2
-) => Board | GameErrorMessage) => {
+) => GameTurnTakenMessage | GameErrorMessage) => {
   return (
     board: Board,
     col: number,
     player: OccupiedState.PLAYER_1 | OccupiedState.PLAYER_2
-  ): Board | GameErrorMessage => {
+  ): GameTurnTakenMessage | GameErrorMessage => {
     if (col < 0 || col >= columns)
       return { type: GameMessage.ERROR, message: 'Invalid attempt' };
     const columnUpdate = [...board[col].slice(0, rows)];
@@ -78,7 +79,11 @@ export const takeTurn = (
     columnUpdate[updatedLocation] = player;
     const updatedBoard = [...board];
     updatedBoard[col] = columnUpdate;
-    return updatedBoard;
+    return {
+      type: GameMessage.TURN_TAKEN,
+      board: updatedBoard,
+      coordinateUpdated: [col, updatedLocation],
+    };
   };
 };
 
@@ -132,16 +137,17 @@ export const traverseGraphAsLongAsMatching = (
       col: getColumnLocation(direction[0], origin[0]),
       row: getRowLocation(direction[1], origin[1]),
     };
-    const isInfinite =
+    const willNeverMove =
       direction[0] === ColOrbit.MIDDLE && direction[1] === RowOrbit.MIDDLE;
+    const notEnoughResults = searchLimit ? result.length < searchLimit : true;
     while (
-      !isInfinite &&
+      !willNeverMove &&
       check.col >= 0 &&
       check.row >= 0 &&
       check.col < columnLimit &&
       check.row < rowLimit &&
       match === board[check.col][check.row] &&
-      (searchLimit ? result.length < searchLimit : true)
+      notEnoughResults
     ) {
       result.push([check.col, check.row]);
       check.col = getColumnLocation(direction[0], check.col);
