@@ -6,7 +6,8 @@ import {
   takeTurnInFourByFourGame,
   createEmptyFourByFourBoard,
   getValidOrbitsForFourByFour,
-  traverseFourByFourGraphAsLongAsMatching,
+  traverseGraphAsLongAsMatching,
+  getWinningCoordinates,
 } from './game-logic';
 import {
   ColOrbit,
@@ -146,7 +147,7 @@ describe('gameLogic', () => {
       ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[0, 1]} | ${[ColOrbit.RIGHT, RowOrbit.MIDDLE]}  | ${[[1, 1], [2, 1], [3, 1]]}
       ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}     | ${[0, 0]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[1, 1], [2, 2]]}
     `(
-      'traverseFourByFourGraphAsLongAsMatching',
+      'traverseGraphAsLongAsMatching(4,4)',
       ({ board, origin, direction, expected }) => {
         it(`should return ${JSON.stringify(
           expected
@@ -155,6 +156,10 @@ describe('gameLogic', () => {
         )}, origin is ${JSON.stringify(
           origin
         )} and direction is ${JSON.stringify(direction)}`, () => {
+          const traverseFourByFourGraphAsLongAsMatching = traverseGraphAsLongAsMatching(
+            4,
+            4
+          );
           const result = traverseFourByFourGraphAsLongAsMatching(
             board,
             origin,
@@ -164,5 +169,226 @@ describe('gameLogic', () => {
         });
       }
     );
+    describe('getWinningCoordinates(4,4)', () => {
+      const getWinningCoordinatesFourByFour = getWinningCoordinates(4, 4, 4);
+      describe('diagonal up', () => {
+        it.each`
+          origin
+          ${[0, 0]} | ${[1, 1]} | ${[2, 2]} | ${[3, 3]}
+        `(
+          'should return [ [ [ 0, 0 ], [ 1, 1 ], [ 2, 2 ], [ 3, 3 ] ] ] when the origin is $origin',
+          ({ origin }) => {
+            const board = [
+              [
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+              ],
+            ];
+            const result = getWinningCoordinatesFourByFour(board, origin);
+            expect(result).toStrictEqual([
+              [
+                [0, 0],
+                [1, 1],
+                [2, 2],
+                [3, 3],
+              ],
+            ]);
+          }
+        );
+      });
+      describe('diagonal down', () => {
+        it.each`
+          origin
+          ${[0, 3]} | ${[1, 2]} | ${[2, 1]} | ${[3, 0]}
+        `(
+          'should return [[0, 3],[1, 2],[2, 1],[3, 0],] when the origin is $origin',
+          ({ origin }) => {
+            const board = [
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+            ];
+            const result = getWinningCoordinatesFourByFour(board, origin);
+            expect(result).toStrictEqual([
+              [
+                [0, 3],
+                [1, 2],
+                [2, 1],
+                [3, 0],
+              ],
+            ]);
+          }
+        );
+      });
+      describe('horizontal', () => {
+        it.each`
+          origin
+          ${[0, 1]} | ${[1, 1]} | ${[2, 1]} | ${[3, 1]}
+        `(
+          'should return [[[0, 1],[1, 1],[2, 1],[3, 1],],] when the origin is $origin',
+          ({ origin }) => {
+            const board = [
+              [
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+            ];
+            const result = getWinningCoordinatesFourByFour(board, origin);
+            expect(result).toStrictEqual([
+              [
+                [0, 1],
+                [1, 1],
+                [2, 1],
+                [3, 1],
+              ],
+            ]);
+          }
+        );
+      });
+      describe('vertical', () => {
+        it.each`
+          origin
+          ${[1, 0]} | ${[1, 1]} | ${[1, 2]} | ${[1, 3]}
+        `(
+          'should return [[[1, 0],[1, 1],[1, 2],[1, 3],],] when the origin is $origin',
+          ({ origin }) => {
+            const board = [
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.PLAYER_1,
+                OccupiedState.PLAYER_1,
+                OccupiedState.PLAYER_1,
+                OccupiedState.PLAYER_1,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+            ];
+            const result = getWinningCoordinatesFourByFour(board, origin);
+            expect(result).toStrictEqual([
+              [
+                [1, 0],
+                [1, 1],
+                [1, 2],
+                [1, 3],
+              ],
+            ]);
+          }
+        );
+      });
+      describe('no win', () => {
+        it.each`
+          origin
+          ${[1, 0]} | ${[1, 2]} | ${[1, 3]}
+        `(
+          'should return [] when the origin is $origin',
+          ({ origin }) => {
+            const board = [
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.PLAYER_1,
+                OccupiedState.NONE,
+                OccupiedState.PLAYER_1,
+                OccupiedState.PLAYER_1,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+              [
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+                OccupiedState.NONE,
+              ],
+            ];
+            const result = getWinningCoordinatesFourByFour(board, origin);
+            expect(result).toStrictEqual([]);
+          }
+        );
+      });
+    });
   });
 });

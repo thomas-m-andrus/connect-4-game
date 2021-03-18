@@ -157,7 +157,44 @@ export const traverseGraphAsLongAsMatching = (
   };
 };
 
-export const traverseFourByFourGraphAsLongAsMatching = traverseGraphAsLongAsMatching(
-  4,
-  4
-);
+export const getWinningCoordinates = (
+  numberToWin: number,
+  rowLimit: number,
+  columnLimit: number,
+  searchLimit?: number
+): ((board: Board, origin: Coordinate) => Coordinate[][]) => {
+  return (board: Board, origin: Coordinate): Coordinate[][] => {
+    const traversalRules = traverseGraphAsLongAsMatching(
+      rowLimit,
+      columnLimit,
+      searchLimit
+    );
+    const traverseGraph = (direction: [ColOrbit, RowOrbit]) =>
+      traversalRules(board, origin, direction);
+    const possibleWins = {
+      diagonalUp: [
+        ...traverseGraph([ColOrbit.LEFT, RowOrbit.BOTTOM]).reverse(),
+        origin,
+        ...traverseGraph([ColOrbit.RIGHT, RowOrbit.TOP]),
+      ],
+      diagonalDown: [
+        ...traverseGraph([ColOrbit.LEFT, RowOrbit.TOP]).reverse(),
+        origin,
+        ...traverseGraph([ColOrbit.RIGHT, RowOrbit.BOTTOM]),
+      ],
+      vertical: [
+        ...traverseGraph([ColOrbit.LEFT, RowOrbit.MIDDLE]).reverse(),
+        origin,
+        ...traverseGraph([ColOrbit.RIGHT, RowOrbit.MIDDLE]),
+      ],
+      horizontal: [
+        ...traverseGraph([ColOrbit.MIDDLE, RowOrbit.BOTTOM]).reverse(),
+        origin,
+        ...traverseGraph([ColOrbit.MIDDLE, RowOrbit.TOP]),
+      ],
+    };
+    return Object.entries(possibleWins).reduce((acc, [_, cur]) => {
+      return cur.length >= numberToWin ? [...acc, cur] : acc;
+    }, []);
+  };
+};
