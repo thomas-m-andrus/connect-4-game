@@ -198,3 +198,5 @@ export const getWinningCoordinates = (
     }, []);
   };
 };
+
+export const getWinningCoordinatesFourByFour = getWinningCoordinates(4, 4, 4);
