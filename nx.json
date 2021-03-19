@@ -24,6 +24,7 @@
     "connect-4": { "tags": [] },
     "connect-4-e2e": { "tags": [], "implicitDependencies": ["connect-4"] },
     "types": { "tags": [] },
-    "game-logic": { "tags": [] }
+    "game-logic": { "tags": [] },
+    "ui": { "tags": [] }
   }
 }
