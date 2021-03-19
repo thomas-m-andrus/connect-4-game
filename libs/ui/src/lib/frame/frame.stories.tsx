@@ -1,14 +1,21 @@
 import React from 'react';
-import { Frame, FrameProps } from './frame';
+import { Frame } from './frame';
 
 export default {
   component: Frame,
-  title: 'Frame',
+  title: 'Pure UI/Frame',
 };
 
 export const primary = () => {
-  /* eslint-disable-next-line */
-  const props: FrameProps = {};
-
-  return <Frame />;
+  return (
+    <Frame
+      buttons={['restart', 'happy times']}
+      label={{ header: { currentTurn: 'Player 1' } }}
+      trigger={(msg) => {
+        console.log(msg.payload);
+      }}
+    >
+      <div>something in the middle</div>
+    </Frame>
+  );
 };

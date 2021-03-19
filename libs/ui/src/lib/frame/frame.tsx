@@ -2,13 +2,30 @@ import React from 'react';
 
 import './frame.module.scss';
 
-/* eslint-disable-next-line */
-export interface FrameProps {}
+import { FrameProps, FrameTriggerType } from '@connect-4-game/types';
 
-export function Frame(props: FrameProps) {
+export function Frame({ label, children, buttons, trigger }: FrameProps) {
+  const handleButtonClick = (buttonName: string) => () =>
+    trigger({ type: FrameTriggerType.BUTTON_CLICK, payload: buttonName });
   return (
-    <div>
-      <h1>Welcome to frame!</h1>
+    <div className={`frame`}>
+      <div className={`frame__header-panel`}>
+        <div
+          className={`frame__header-text`}
+        >{`Turn: ${label.header.currentTurn}`}</div>
+      </div>
+      <div className={`frame__body-panel`}>{children}</div>
+      <div className={`frame__footer-panel`}>
+        <div>Choose:</div>
+        {buttons.map((buttonLabel, idx) => (
+          <button
+            key={`frame__button frame__button--${buttonLabel}-${idx}`}
+            onClick={handleButtonClick(buttonLabel)}
+          >
+            {buttonLabel}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

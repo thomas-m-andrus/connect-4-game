@@ -1,0 +1,17 @@
+.frame {
+  display: inline-flex;
+  flex-direction: column;
+  justify-items: center;
+  & > * {
+    display: flex;
+    justify-content: center;
+  }
+  font-family: sans-serif;
+}
+.frame__footer-panel {
+  display: flex;
+  justify-content: space-evenly;
+  & > :not(:last-child) {
+    margin-right: 10px;
+  }
+}

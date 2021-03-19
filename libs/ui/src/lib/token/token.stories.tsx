@@ -5,7 +5,7 @@ import { select } from '@storybook/addon-knobs';
 
 export default {
   component: Token,
-  title: 'Token',
+  title: 'Pure UI/Token',
 };
 
 export const primary = () => {

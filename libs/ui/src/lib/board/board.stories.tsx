@@ -5,7 +5,7 @@ import { array, select, text } from '@storybook/addon-knobs';
 
 export default {
   component: Board,
-  title: 'Board',
+  title: 'Pure UI/Board',
 };
 
 export const primary = () => {
