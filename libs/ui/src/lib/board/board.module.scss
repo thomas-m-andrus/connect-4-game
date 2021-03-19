@@ -1,0 +1,13 @@
+.board {
+  display: flex;
+}
+.board__column {
+  display: flex;
+  flex-direction: column;
+  & > *:not(:last-child) {
+    margin-bottom: 17px;
+  }
+}
+.board__column:not(:first-child) {
+  margin-left: 13px;
+}
