@@ -1,5 +1,7 @@
 import React from 'react';
-import { Token, TokenProps } from './token';
+import { Token } from './token';
+import { OccupiedState } from '@connect-4-game/types';
+import { select } from '@storybook/addon-knobs';
 
 export default {
   component: Token,
@@ -7,8 +9,5 @@ export default {
 };
 
 export const primary = () => {
-  /* eslint-disable-next-line */
-  const props: TokenProps = {};
-
-  return <Token />;
+  return <Token state={select('state', OccupiedState, OccupiedState.NONE)} />;
 };
