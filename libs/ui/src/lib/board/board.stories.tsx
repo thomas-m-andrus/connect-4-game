@@ -11,6 +11,9 @@ export default {
 export const primary = () => {
   return (
     <Board
+      trigger={(message) => {
+        console.log(message);
+      }}
       board={[
         array('column 1', [
           'PLAYER_1',
