@@ -1,4 +1,3 @@
-import { GamePhase, GameState as State } from './model';
 import { Action, ActionType, actionCreator } from './action';
 import {
   createEmptyFourByFourBoard,
@@ -6,7 +5,12 @@ import {
   takeTurnInFourByFourGame,
   fourByFourBoardIsFilled,
 } from '../game-logic';
-import { OccupiedState, GameMessage } from '@connect-4-game/types';
+import {
+  OccupiedState,
+  GameMessage,
+  GamePhase,
+  GameState as State,
+} from '@connect-4-game/types';
 
 export const FourByFourGameReducer = (state: State, action: Action): State => {
   switch (action.type) {

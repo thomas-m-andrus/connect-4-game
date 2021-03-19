@@ -1,4 +1,4 @@
-import { Board } from '@connect-4-game/types';
+import { Board } from './game-logic';
 
 export enum GamePhase {
   MID = 'MID',

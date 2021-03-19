@@ -1,7 +1,9 @@
 .board {
   padding: 35px;
   background-color: #d8d8d8;
+  border: 2px solid #a4a4a4;
   display: inline-flex;
+  position: relative;
 }
 .board__column {
   display: flex;
@@ -12,4 +14,21 @@
 }
 .board__column:not(:first-child) {
   margin-left: 13px;
+}
+$winFullFontSize: 80px;
+$fontWeight: 700;
+.board__message {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: sans-serif;
+  .board--win > & {
+    font-size: $winFullFontSize;
+    font-weight: $fontWeight;
+  }
+  .board--full > & {
+    font-size: $winFullFontSize;
+    font-weight: $fontWeight;
+  }
 }
