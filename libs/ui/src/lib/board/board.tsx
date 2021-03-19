@@ -18,20 +18,22 @@ export function Board({ board, trigger, message, state }: BoardProps) {
   return (
     <div className={`board board--${classBoardState[state]}`}>
       {message && <span className="board__message">{message}</span>}
-      {boardCorrectDirections.map((column, index) => (
-        <div
-          key={`board__column--${index}`}
-          className="board__column"
-          onClick={handleClickColumn(index)}
-        >
-          {column.map((token, tokenIndex) => (
-            <Token
-              key={`board__col--${index}__token--${tokenIndex}`}
-              state={token}
-            ></Token>
-          ))}
-        </div>
-      ))}
+      <div className={`board__columns`}>
+        {boardCorrectDirections.map((column, index) => (
+          <div
+            key={`board__column--${index}`}
+            className="board__column"
+            onClick={handleClickColumn(index)}
+          >
+            {column.map((token, tokenIndex) => (
+              <Token
+                key={`board__col--${index}__token--${tokenIndex}`}
+                state={token}
+              ></Token>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

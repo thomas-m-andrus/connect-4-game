@@ -2,8 +2,11 @@
   padding: 35px;
   background-color: #d8d8d8;
   border: 2px solid #a4a4a4;
-  display: inline-flex;
   position: relative;
+  display: inline-block;
+}
+.board__columns {
+  display: inline-flex;
 }
 .board__column {
   display: flex;
