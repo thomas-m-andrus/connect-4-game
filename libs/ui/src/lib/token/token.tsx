@@ -6,11 +6,7 @@ import './token.module.scss';
 export interface TokenProps {}
 
 export function Token(props: TokenProps) {
-  return (
-    <div>
-      <h1>Welcome to token!</h1>
-    </div>
-  );
+  return <div className={`token token--empty`} />;
 }
 
 export default Token;
