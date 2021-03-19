@@ -1,5 +1,7 @@
 .board {
-  display: flex;
+  padding: 35px;
+  background-color: #d8d8d8;
+  display: inline-flex;
 }
 .board__column {
   display: flex;
