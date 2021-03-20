@@ -188,6 +188,25 @@
             "jestConfig": "libs/wrapper/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "storybook": {
+          "executor": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/react",
+            "port": 4400,
+            "config": { "configFolder": "libs/wrapper/.storybook" }
+          },
+          "configurations": { "ci": { "quiet": true } }
+        },
+        "build-storybook": {
+          "executor": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/react",
+            "outputPath": "dist/storybook/wrapper",
+            "config": { "configFolder": "libs/wrapper/.storybook" }
+          },
+          "configurations": { "ci": { "quiet": true } }
         }
       }
     }
