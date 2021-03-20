@@ -59,6 +59,8 @@ export const FourByFourGameReducer = (state: State, action: Action): State => {
         };
       }
     }
+    case ActionType.CLEAR_ERROR:
+      return { ...state, error: undefined };
     default:
       return { ...state };
   }

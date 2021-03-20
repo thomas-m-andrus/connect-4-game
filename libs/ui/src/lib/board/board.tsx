@@ -14,23 +14,25 @@ export function Board({ board, trigger, message, state }: BoardProps) {
     MID: 'mid',
     WIN: 'win',
   };
-  const boardCorrectDirections = board.map((col) => col.reverse());
   return (
     <div className={`board board--${classBoardState[state]}`}>
       {message && <span className="board__message">{message}</span>}
       <div className={`board__columns`}>
-        {boardCorrectDirections.map((column, index) => (
+        {board.map((column, index) => (
           <div
             key={`board__column--${index}`}
             className="board__column"
             onClick={handleClickColumn(index)}
           >
-            {column.map((token, tokenIndex) => (
-              <Token
-                key={`board__col--${index}__token--${tokenIndex}`}
-                state={token}
-              ></Token>
-            ))}
+            {column
+              .slice(0)
+              .reverse()
+              .map((token, tokenIndex) => (
+                <Token
+                  key={`board__col--${index}__token--${tokenIndex}`}
+                  state={token}
+                ></Token>
+              ))}
           </div>
         ))}
       </div>
