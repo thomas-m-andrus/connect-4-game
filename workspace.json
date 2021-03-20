@@ -169,6 +169,27 @@
           "configurations": { "ci": { "quiet": true } }
         }
       }
+    },
+    "wrapper": {
+      "root": "libs/wrapper",
+      "sourceRoot": "libs/wrapper/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/wrapper/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/wrapper"],
+          "options": {
+            "jestConfig": "libs/wrapper/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }
