@@ -11,7 +11,7 @@ export interface FrameTriggerAction {
 export type Button = string;
 
 export interface FrameBaseProps {
-  label: { header: { currentTurn: string } };
+  label: { header: { currentTurn: string }, footer:{instructions?:string} };
   buttons: Button[];
   trigger: (msg: FrameTriggerAction) => void;
 }

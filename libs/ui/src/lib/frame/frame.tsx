@@ -16,7 +16,7 @@ export function Frame({ label, children, buttons, trigger }: FrameProps) {
       </div>
       <div className={`frame__body-panel`}>{children}</div>
       <div className={`frame__footer-panel`}>
-        <div>Choose:</div>
+        {label.footer.instructions && <div>{label.footer.instructions}</div>}
         {buttons.map((buttonLabel, idx) => (
           <button
             key={`frame__button frame__button--${buttonLabel}-${idx}`}

@@ -10,7 +10,10 @@ export const primary = () => {
   return (
     <Frame
       buttons={['restart', 'happy times']}
-      label={{ header: { currentTurn: 'Player 1' } }}
+      label={{
+        header: { currentTurn: 'Player 1' },
+        footer: { instructions: 'Choose:' },
+      }}
       trigger={(msg) => {
         console.log(msg.payload);
       }}
