@@ -27,6 +27,17 @@ export const getRowLocation = (orbit: RowOrbit, start: number): number => {
   return start + moveTo[orbit];
 };
 
+export const travel = (
+  origin: Coordinate,
+  colDirection: ColOrbit,
+  rowDirection: RowOrbit
+): Coordinate => {
+  return [
+    getColumnLocation(colDirection, origin[0]),
+    getRowLocation(rowDirection, origin[1]),
+  ];
+};
+
 export const boardIsFilled = (
   rows: number,
   columns: number
@@ -100,8 +111,7 @@ export const getValidOrbits = (
         ...Object.keys(RowOrbit).reduce((secondLvlAcc, rowKey) => {
           const colVal = ColOrbit[colKey];
           const rowVal = RowOrbit[rowKey];
-          const col = getColumnLocation(colVal, origin[0]);
-          const row = getRowLocation(rowVal, origin[1]);
+          const [col, row] = travel(origin, colVal, rowVal);
           return col >= 0 &&
             row >= 0 &&
             col < columns &&
@@ -133,9 +143,11 @@ export const traverseGraphAsLongAsMatching = (
   ): Coordinate[] => {
     const result = [];
     const match = board[origin[0]][origin[1]];
+    const [colDir, rowDir] = direction;
+    const firstCheck = travel(origin, colDir, rowDir);
     const check = {
-      col: getColumnLocation(direction[0], origin[0]),
-      row: getRowLocation(direction[1], origin[1]),
+      col: firstCheck[0],
+      row: firstCheck[1],
     };
     const willNeverMove =
       direction[0] === ColOrbit.MIDDLE && direction[1] === RowOrbit.MIDDLE;
@@ -200,3 +212,5 @@ export const getWinningCoordinates = (
 };
 
 export const getWinningCoordinatesFourByFour = getWinningCoordinates(4, 4, 4);
+
+//future iterations would have the ability to call a draw early

@@ -116,278 +116,273 @@ describe('gameLogic', () => {
         }
       });
     });
-    describe.each`
-      input     | expected                                                                                                                                                                                                                                                                                                                                                                                                                                            | len
-      ${[0, 0]} | ${{ [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [1, 0], [`${ColOrbit.RIGHT}______${RowOrbit.TOP}`]: [1, 1], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [0, 1] }}                                                                                                                                                                                                                                                                               | ${3}
-      ${[3, 0]} | ${{ [`${ColOrbit.LEFT}______${RowOrbit.MIDDLE}`]: [2, 0], [`${ColOrbit.LEFT}______${RowOrbit.TOP}`]: [2, 1], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [3, 1] }}                                                                                                                                                                                                                                                                                 | ${3}
-      ${[0, 3]} | ${{ [`${ColOrbit.MIDDLE}______${RowOrbit.BOTTOM}`]: [0, 2], [`${ColOrbit.RIGHT}______${RowOrbit.BOTTOM}`]: [1, 2], [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [1, 3] }}                                                                                                                                                                                                                                                                         | ${3}
-      ${[3, 3]} | ${{ [`${ColOrbit.LEFT}______${RowOrbit.MIDDLE}`]: [2, 3], [`${ColOrbit.LEFT}______${RowOrbit.BOTTOM}`]: [2, 2], [`${ColOrbit.MIDDLE}______${RowOrbit.BOTTOM}`]: [3, 2] }}                                                                                                                                                                                                                                                                           | ${3}
-      ${[2, 2]} | ${{ [`${ColOrbit.LEFT}______${RowOrbit.BOTTOM}`]: [1, 1], [`${ColOrbit.LEFT}______${RowOrbit.MIDDLE}`]: [1, 2], [`${ColOrbit.LEFT}______${RowOrbit.TOP}`]: [1, 3], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [2, 3], [`${ColOrbit.MIDDLE}______${RowOrbit.BOTTOM}`]: [2, 1], [`${ColOrbit.RIGHT}______${RowOrbit.BOTTOM}`]: [3, 1], [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [3, 2], [`${ColOrbit.RIGHT}______${RowOrbit.TOP}`]: [3, 3] }} | ${8}
-    `('getValidOrbitsForFourByFour', ({ input, expected, len }) => {
+  });
+  describe.each`
+    input     | expected                                                                                                                                                                                                                                                                                                                                                                                                                                            | len
+    ${[0, 0]} | ${{ [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [1, 0], [`${ColOrbit.RIGHT}______${RowOrbit.TOP}`]: [1, 1], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [0, 1] }}                                                                                                                                                                                                                                                                               | ${3}
+    ${[3, 0]} | ${{ [`${ColOrbit.LEFT}______${RowOrbit.MIDDLE}`]: [2, 0], [`${ColOrbit.LEFT}______${RowOrbit.TOP}`]: [2, 1], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [3, 1] }}                                                                                                                                                                                                                                                                                 | ${3}
+    ${[0, 3]} | ${{ [`${ColOrbit.MIDDLE}______${RowOrbit.BOTTOM}`]: [0, 2], [`${ColOrbit.RIGHT}______${RowOrbit.BOTTOM}`]: [1, 2], [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [1, 3] }}                                                                                                                                                                                                                                                                         | ${3}
+    ${[3, 3]} | ${{ [`${ColOrbit.LEFT}______${RowOrbit.MIDDLE}`]: [2, 3], [`${ColOrbit.LEFT}______${RowOrbit.BOTTOM}`]: [2, 2], [`${ColOrbit.MIDDLE}______${RowOrbit.BOTTOM}`]: [3, 2] }}                                                                                                                                                                                                                                                                           | ${3}
+    ${[2, 2]} | ${{ [`${ColOrbit.LEFT}______${RowOrbit.BOTTOM}`]: [1, 1], [`${ColOrbit.LEFT}______${RowOrbit.MIDDLE}`]: [1, 2], [`${ColOrbit.LEFT}______${RowOrbit.TOP}`]: [1, 3], [`${ColOrbit.MIDDLE}______${RowOrbit.TOP}`]: [2, 3], [`${ColOrbit.MIDDLE}______${RowOrbit.BOTTOM}`]: [2, 1], [`${ColOrbit.RIGHT}______${RowOrbit.BOTTOM}`]: [3, 1], [`${ColOrbit.RIGHT}______${RowOrbit.MIDDLE}`]: [3, 2], [`${ColOrbit.RIGHT}______${RowOrbit.TOP}`]: [3, 3] }} | ${8}
+  `('getValidOrbitsForFourByFour', ({ input, expected, len }) => {
+    it(`should return ${JSON.stringify(
+      expected
+    )} when input is ${input}`, () => {
+      const result = getValidOrbitsForFourByFour(input);
+      expect(Object.keys(result).length).toBe(len);
+      expect(result).toEqual(expected);
+    });
+  });
+  describe.each`
+    board                                                                                                                                                       | origin    | direction                             | expected
+    ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'PLAYER_1']]} | ${[0, 0]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[1, 1], [2, 2], [3, 3]]}
+    ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'PLAYER_1']]} | ${[2, 2]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[3, 3]]}
+    ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'PLAYER_1']]} | ${[3, 3]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[]}
+    ${[['NONE', 'NONE', 'NONE', 'PLAYER_1'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE']]} | ${[0, 3]} | ${[ColOrbit.RIGHT, RowOrbit.BOTTOM]}  | ${[[1, 2], [2, 1], [3, 0]]}
+    ${[['NONE', 'NONE', 'NONE', 'PLAYER_1'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE']]} | ${[3, 0]} | ${[ColOrbit.LEFT, RowOrbit.TOP]}      | ${[[2, 1], [1, 2], [0, 3]]}
+    ${[['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'PLAYER_1', 'PLAYER_1'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]} | ${[1, 0]} | ${[ColOrbit.MIDDLE, RowOrbit.TOP]}    | ${[[1, 1], [1, 2], [1, 3]]}
+    ${[['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'PLAYER_1', 'PLAYER_1'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]} | ${[1, 3]} | ${[ColOrbit.MIDDLE, RowOrbit.BOTTOM]} | ${[[1, 2], [1, 1], [1, 0]]}
+    ${[['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'PLAYER_1', 'PLAYER_1'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]} | ${[1, 0]} | ${[ColOrbit.MIDDLE, RowOrbit.MIDDLE]} | ${[]}
+    ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[3, 1]} | ${[ColOrbit.LEFT, RowOrbit.MIDDLE]}   | ${[[2, 1], [1, 1], [0, 1]]}
+    ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[3, 1]} | ${[ColOrbit.LEFT, RowOrbit.MIDDLE]}   | ${[[2, 1], [1, 1], [0, 1]]}
+    ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[0, 1]} | ${[ColOrbit.RIGHT, RowOrbit.MIDDLE]}  | ${[[1, 1], [2, 1], [3, 1]]}
+    ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}     | ${[0, 0]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[1, 1], [2, 2]]}
+  `(
+    'traverseGraphAsLongAsMatching(4,4)',
+    ({ board, origin, direction, expected }) => {
       it(`should return ${JSON.stringify(
         expected
-      )} when input is ${input}`, () => {
-        const result = getValidOrbitsForFourByFour(input);
-        expect(Object.keys(result).length).toBe(len);
-        expect(result).toEqual(expected);
+      )} when the board is ${JSON.stringify(board)}, origin is ${JSON.stringify(
+        origin
+      )} and direction is ${JSON.stringify(direction)}`, () => {
+        const traverseFourByFourGraphAsLongAsMatching = traverseGraphAsLongAsMatching(
+          4,
+          4
+        );
+        const result = traverseFourByFourGraphAsLongAsMatching(
+          board,
+          origin,
+          direction
+        );
+        expect(result).toStrictEqual(expected);
       });
+    }
+  );
+  describe('getWinningCoordinates(4,4)', () => {
+    const getWinningCoordinatesFourByFour = getWinningCoordinates(4, 4, 4);
+    describe('diagonal up', () => {
+      it.each`
+        origin
+        ${[0, 0]} | ${[1, 1]} | ${[2, 2]} | ${[3, 3]}
+      `(
+        'should return [ [ [ 0, 0 ], [ 1, 1 ], [ 2, 2 ], [ 3, 3 ] ] ] when the origin is $origin',
+        ({ origin }) => {
+          const board = [
+            [
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+            ],
+          ];
+          const result = getWinningCoordinatesFourByFour(board, origin);
+          expect(result).toStrictEqual([
+            [
+              [0, 0],
+              [1, 1],
+              [2, 2],
+              [3, 3],
+            ],
+          ]);
+        }
+      );
     });
-    describe.each`
-      board                                                                                                                                                       | origin    | direction                             | expected
-      ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'PLAYER_1']]} | ${[0, 0]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[1, 1], [2, 2], [3, 3]]}
-      ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'PLAYER_1']]} | ${[2, 2]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[3, 3]]}
-      ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'PLAYER_1']]} | ${[3, 3]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[]}
-      ${[['NONE', 'NONE', 'NONE', 'PLAYER_1'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE']]} | ${[0, 3]} | ${[ColOrbit.RIGHT, RowOrbit.BOTTOM]}  | ${[[1, 2], [2, 1], [3, 0]]}
-      ${[['NONE', 'NONE', 'NONE', 'PLAYER_1'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['PLAYER_1', 'NONE', 'NONE', 'NONE']]} | ${[3, 0]} | ${[ColOrbit.LEFT, RowOrbit.TOP]}      | ${[[2, 1], [1, 2], [0, 3]]}
-      ${[['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'PLAYER_1', 'PLAYER_1'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]} | ${[1, 0]} | ${[ColOrbit.MIDDLE, RowOrbit.TOP]}    | ${[[1, 1], [1, 2], [1, 3]]}
-      ${[['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'PLAYER_1', 'PLAYER_1'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]} | ${[1, 3]} | ${[ColOrbit.MIDDLE, RowOrbit.BOTTOM]} | ${[[1, 2], [1, 1], [1, 0]]}
-      ${[['NONE', 'NONE', 'NONE', 'NONE'], ['PLAYER_1', 'PLAYER_1', 'PLAYER_1', 'PLAYER_1'], ['NONE', 'NONE', 'NONE', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]} | ${[1, 0]} | ${[ColOrbit.MIDDLE, RowOrbit.MIDDLE]} | ${[]}
-      ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[3, 1]} | ${[ColOrbit.LEFT, RowOrbit.MIDDLE]}   | ${[[2, 1], [1, 1], [0, 1]]}
-      ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[3, 1]} | ${[ColOrbit.LEFT, RowOrbit.MIDDLE]}   | ${[[2, 1], [1, 1], [0, 1]]}
-      ${[['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE']]} | ${[0, 1]} | ${[ColOrbit.RIGHT, RowOrbit.MIDDLE]}  | ${[[1, 1], [2, 1], [3, 1]]}
-      ${[['PLAYER_1', 'NONE', 'NONE', 'NONE'], ['NONE', 'PLAYER_1', 'NONE', 'NONE'], ['NONE', 'NONE', 'PLAYER_1', 'NONE'], ['NONE', 'NONE', 'NONE', 'NONE']]}     | ${[0, 0]} | ${[ColOrbit.RIGHT, RowOrbit.TOP]}     | ${[[1, 1], [2, 2]]}
-    `(
-      'traverseGraphAsLongAsMatching(4,4)',
-      ({ board, origin, direction, expected }) => {
-        it(`should return ${JSON.stringify(
-          expected
-        )} when the board is ${JSON.stringify(
-          board
-        )}, origin is ${JSON.stringify(
-          origin
-        )} and direction is ${JSON.stringify(direction)}`, () => {
-          const traverseFourByFourGraphAsLongAsMatching = traverseGraphAsLongAsMatching(
-            4,
-            4
-          );
-          const result = traverseFourByFourGraphAsLongAsMatching(
-            board,
-            origin,
-            direction
-          );
-          expect(result).toStrictEqual(expected);
-        });
-      }
-    );
-    describe('getWinningCoordinates(4,4)', () => {
-      const getWinningCoordinatesFourByFour = getWinningCoordinates(4, 4, 4);
-      describe('diagonal up', () => {
-        it.each`
-          origin
-          ${[0, 0]} | ${[1, 1]} | ${[2, 2]} | ${[3, 3]}
-        `(
-          'should return [ [ [ 0, 0 ], [ 1, 1 ], [ 2, 2 ], [ 3, 3 ] ] ] when the origin is $origin',
-          ({ origin }) => {
-            const board = [
-              [
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-              ],
-            ];
-            const result = getWinningCoordinatesFourByFour(board, origin);
-            expect(result).toStrictEqual([
-              [
-                [0, 0],
-                [1, 1],
-                [2, 2],
-                [3, 3],
-              ],
-            ]);
-          }
-        );
-      });
-      describe('diagonal down', () => {
-        it.each`
-          origin
-          ${[0, 3]} | ${[1, 2]} | ${[2, 1]} | ${[3, 0]}
-        `(
-          'should return [[0, 3],[1, 2],[2, 1],[3, 0],] when the origin is $origin',
-          ({ origin }) => {
-            const board = [
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-            ];
-            const result = getWinningCoordinatesFourByFour(board, origin);
-            expect(result).toStrictEqual([
-              [
-                [0, 3],
-                [1, 2],
-                [2, 1],
-                [3, 0],
-              ],
-            ]);
-          }
-        );
-      });
-      describe('horizontal', () => {
-        it.each`
-          origin
-          ${[0, 1]} | ${[1, 1]} | ${[2, 1]} | ${[3, 1]}
-        `(
-          'should return [[[0, 1],[1, 1],[2, 1],[3, 1],],] when the origin is $origin',
-          ({ origin }) => {
-            const board = [
-              [
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-            ];
-            const result = getWinningCoordinatesFourByFour(board, origin);
-            expect(result).toStrictEqual([
-              [
-                [0, 1],
-                [1, 1],
-                [2, 1],
-                [3, 1],
-              ],
-            ]);
-          }
-        );
-      });
-      describe('vertical', () => {
-        it.each`
-          origin
-          ${[1, 0]} | ${[1, 1]} | ${[1, 2]} | ${[1, 3]}
-        `(
-          'should return [[[1, 0],[1, 1],[1, 2],[1, 3],],] when the origin is $origin',
-          ({ origin }) => {
-            const board = [
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.PLAYER_1,
-                OccupiedState.PLAYER_1,
-                OccupiedState.PLAYER_1,
-                OccupiedState.PLAYER_1,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-            ];
-            const result = getWinningCoordinatesFourByFour(board, origin);
-            expect(result).toStrictEqual([
-              [
-                [1, 0],
-                [1, 1],
-                [1, 2],
-                [1, 3],
-              ],
-            ]);
-          }
-        );
-      });
-      describe('no win', () => {
-        it.each`
-          origin
-          ${[1, 0]} | ${[1, 2]} | ${[1, 3]}
-        `(
-          'should return [] when the origin is $origin',
-          ({ origin }) => {
-            const board = [
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.PLAYER_1,
-                OccupiedState.NONE,
-                OccupiedState.PLAYER_1,
-                OccupiedState.PLAYER_1,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-              [
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-                OccupiedState.NONE,
-              ],
-            ];
-            const result = getWinningCoordinatesFourByFour(board, origin);
-            expect(result).toStrictEqual([]);
-          }
-        );
+    describe('diagonal down', () => {
+      it.each`
+        origin
+        ${[0, 3]} | ${[1, 2]} | ${[2, 1]} | ${[3, 0]}
+      `(
+        'should return [[0, 3],[1, 2],[2, 1],[3, 0],] when the origin is $origin',
+        ({ origin }) => {
+          const board = [
+            [
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+          ];
+          const result = getWinningCoordinatesFourByFour(board, origin);
+          expect(result).toStrictEqual([
+            [
+              [0, 3],
+              [1, 2],
+              [2, 1],
+              [3, 0],
+            ],
+          ]);
+        }
+      );
+    });
+    describe('horizontal', () => {
+      it.each`
+        origin
+        ${[0, 1]} | ${[1, 1]} | ${[2, 1]} | ${[3, 1]}
+      `(
+        'should return [[[0, 1],[1, 1],[2, 1],[3, 1],],] when the origin is $origin',
+        ({ origin }) => {
+          const board = [
+            [
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.PLAYER_1,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+          ];
+          const result = getWinningCoordinatesFourByFour(board, origin);
+          expect(result).toStrictEqual([
+            [
+              [0, 1],
+              [1, 1],
+              [2, 1],
+              [3, 1],
+            ],
+          ]);
+        }
+      );
+    });
+    describe('vertical', () => {
+      it.each`
+        origin
+        ${[1, 0]} | ${[1, 1]} | ${[1, 2]} | ${[1, 3]}
+      `(
+        'should return [[[1, 0],[1, 1],[1, 2],[1, 3],],] when the origin is $origin',
+        ({ origin }) => {
+          const board = [
+            [
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.PLAYER_1,
+              OccupiedState.PLAYER_1,
+              OccupiedState.PLAYER_1,
+              OccupiedState.PLAYER_1,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+            [
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+              OccupiedState.NONE,
+            ],
+          ];
+          const result = getWinningCoordinatesFourByFour(board, origin);
+          expect(result).toStrictEqual([
+            [
+              [1, 0],
+              [1, 1],
+              [1, 2],
+              [1, 3],
+            ],
+          ]);
+        }
+      );
+    });
+    describe('no win', () => {
+      it.each`
+        origin
+        ${[1, 0]} | ${[1, 2]} | ${[1, 3]}
+      `('should return [] when the origin is $origin', ({ origin }) => {
+        const board = [
+          [
+            OccupiedState.NONE,
+            OccupiedState.NONE,
+            OccupiedState.NONE,
+            OccupiedState.NONE,
+          ],
+          [
+            OccupiedState.PLAYER_1,
+            OccupiedState.NONE,
+            OccupiedState.PLAYER_1,
+            OccupiedState.PLAYER_1,
+          ],
+          [
+            OccupiedState.NONE,
+            OccupiedState.NONE,
+            OccupiedState.NONE,
+            OccupiedState.NONE,
+          ],
+          [
+            OccupiedState.NONE,
+            OccupiedState.NONE,
+            OccupiedState.NONE,
+            OccupiedState.NONE,
+          ],
+        ];
+        const result = getWinningCoordinatesFourByFour(board, origin);
+        expect(result).toStrictEqual([]);
       });
     });
   });
