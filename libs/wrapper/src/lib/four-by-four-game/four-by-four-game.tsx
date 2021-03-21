@@ -1,35 +1,37 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import { Board, Frame } from '@connect-4-game/ui';
 import {
-  createEmptyFourByFourBoard,
   FourByFourGameReducer,
   actionCreator,
 } from '@connect-4-game/game-logic';
 import './four-by-four-game.module.scss';
 import {
-  GamePhase,
-  GameState,
   OccupiedState,
   FooterState,
   GameType,
 } from '@connect-4-game/types';
-import { restart, determineNextFooterState, getPlayerTurn } from './utils';
+import {
+  restart,
+  determineNextFooterState,
+  getPlayerTurn,
+  acceptTriggerFromBoard,
+  getBoardMessage,
+  initial,
+} from './utils';
 
-const initial: GameState = {
-  board: createEmptyFourByFourBoard(),
-  gamePhase: GamePhase.MID,
-  history: [],
-};
 export function FourByFourGame() {
   const [state, dispatch] = useReducer(FourByFourGameReducer, initial);
   const [footer, setFooter] = useState<FooterState>(restart);
   const playerTurn = getPlayerTurn(state);
-  const boardMessage =
-    state.gamePhase === GamePhase.WIN
-      ? 'Win!'
-      : state.gamePhase === GamePhase.FULL
-      ? 'Draw!'
-      : state.error;
+  const boardMessage = getBoardMessage(state);
+  const handleBoardTrigger = (msg) => {
+    if (acceptTriggerFromBoard(footer, playerTurn)) {
+      dispatch(actionCreator.takeTurn(playerTurn, msg.payload));
+    }
+  };
+  const handleFrameTrigger = (msg) => {
+    setFooter(determineNextFooterState(footer, msg.payload));
+  };
   useEffect(() => {
     if (state.error !== undefined) {
       setTimeout(() => {
@@ -45,9 +47,7 @@ export function FourByFourGame() {
   return (
     <Frame
       buttons={footer.buttons}
-      trigger={(msg) => {
-        setFooter(determineNextFooterState(footer, msg.payload));
-      }}
+      trigger={handleFrameTrigger}
       label={{
         header: {
           currentTurn:
@@ -59,17 +59,7 @@ export function FourByFourGame() {
       }}
     >
       <Board
-        trigger={(msg) => {
-          if (
-            ![GameType.NOT_CHOSEN, GameType.AI_VS_AI].includes(
-              footer.gameType
-            ) &&
-            (footer.gameType === GameType.PLAYER_VS_PLAYER ||
-              playerTurn === footer.playerVsAIAssignment)
-          ) {
-            dispatch(actionCreator.takeTurn(playerTurn, msg.payload));
-          }
-        }}
+        trigger={handleBoardTrigger}
         board={state.board}
         state={state.gamePhase}
         message={boardMessage}
