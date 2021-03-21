@@ -1,6 +1,10 @@
 import React from 'react';
 import { Token } from '../token/token';
-import { BoardProps, TriggerType, GamePhase } from '@connect-the-tokens-game/types';
+import {
+  BoardProps,
+  TriggerType,
+  GamePhase,
+} from '@connect-the-tokens-game/types';
 import './board.module.scss';
 
 export function Board({ board, trigger, message, state }: BoardProps) {
