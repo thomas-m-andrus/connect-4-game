@@ -2,7 +2,7 @@ import React from 'react';
 
 import './frame.module.scss';
 
-import { FrameProps, FrameTriggerType } from '@connect-4-game/types';
+import { FrameProps, FrameTriggerType } from '@connect-the-tokens-game/types';
 
 export function Frame({ label, children, buttons, trigger }: FrameProps) {
   const handleButtonClick = (buttonName: string) => () =>

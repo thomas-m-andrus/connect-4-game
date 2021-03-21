@@ -1,4 +1,8 @@
-import { FooterState, GameType, OccupiedState } from '@connect-4-game/types';
+import {
+  FooterState,
+  GameType,
+  OccupiedState,
+} from '@connect-the-tokens-game/types';
 
 export const buttonLabels = {
   [GameType.PLAYER_VS_PLAYER]: 'Player vs Player',

@@ -10,7 +10,7 @@ import {
   GameMessage,
   GamePhase,
   GameState as State,
-} from '@connect-4-game/types';
+} from '@connect-the-tokens-game/types';
 
 export const FourByFourGameReducer = (state: State, action: Action): State => {
   switch (action.type) {

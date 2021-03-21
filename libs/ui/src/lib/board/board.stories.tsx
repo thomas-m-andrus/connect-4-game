@@ -1,6 +1,6 @@
 import React from 'react';
 import { Board } from './board';
-import { OccupiedState, GamePhase } from '@connect-4-game/types';
+import { OccupiedState, GamePhase } from '@connect-the-tokens-game/types';
 import { array, select, text } from '@storybook/addon-knobs';
 
 export default {

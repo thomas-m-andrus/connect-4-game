@@ -1,7 +1,7 @@
 {
   "version": 2,
   "cli": { "defaultCollection": "@nrwl/react" },
-  "defaultProject": "connect-4",
+  "defaultProject": "connect-the-tokens-game",
   "generators": {
     "@nrwl/react": {
       "application": { "style": "scss", "linter": "eslint", "babel": true },
@@ -10,25 +10,25 @@
     }
   },
   "projects": {
-    "connect-4": {
-      "root": "apps/connect-4",
-      "sourceRoot": "apps/connect-4/src",
+    "connect-the-tokens-game": {
+      "root": "apps/connect-the-tokens-game",
+      "sourceRoot": "apps/connect-the-tokens-game/src",
       "projectType": "application",
       "targets": {
         "build": {
           "executor": "@nrwl/web:build",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/connect-4",
-            "index": "apps/connect-4/src/index.html",
-            "main": "apps/connect-4/src/main.tsx",
-            "polyfills": "apps/connect-4/src/polyfills.ts",
-            "tsConfig": "apps/connect-4/tsconfig.app.json",
+            "outputPath": "dist/apps/connect-the-tokens-game",
+            "index": "apps/connect-the-tokens-game/src/index.html",
+            "main": "apps/connect-the-tokens-game/src/main.tsx",
+            "polyfills": "apps/connect-the-tokens-game/src/polyfills.ts",
+            "tsConfig": "apps/connect-the-tokens-game/tsconfig.app.json",
             "assets": [
-              "apps/connect-4/src/favicon.ico",
-              "apps/connect-4/src/assets"
+              "apps/connect-the-tokens-game/src/favicon.ico",
+              "apps/connect-the-tokens-game/src/assets"
             ],
-            "styles": ["apps/connect-4/src/styles.scss"],
+            "styles": ["apps/connect-the-tokens-game/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -36,8 +36,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/connect-4/src/environments/environment.ts",
-                  "with": "apps/connect-4/src/environments/environment.prod.ts"
+                  "replace": "apps/connect-the-tokens-game/src/environments/environment.ts",
+                  "with": "apps/connect-the-tokens-game/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -59,75 +59,55 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": { "buildTarget": "connect-4:build" },
+          "options": { "buildTarget": "connect-the-tokens-game:build" },
           "configurations": {
-            "production": { "buildTarget": "connect-4:build:production" }
+            "production": {
+              "buildTarget": "connect-the-tokens-game:build:production"
+            }
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/connect-4/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "apps/connect-the-tokens-game/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/connect-4"],
+          "outputs": ["coverage/apps/connect-the-tokens-game"],
           "options": {
-            "jestConfig": "apps/connect-4/jest.config.js",
+            "jestConfig": "apps/connect-the-tokens-game/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
-    "connect-4-e2e": {
-      "root": "apps/connect-4-e2e",
-      "sourceRoot": "apps/connect-4-e2e/src",
+    "connect-the-tokens-game-e2e": {
+      "root": "apps/connect-the-tokens-game-e2e",
+      "sourceRoot": "apps/connect-the-tokens-game-e2e/src",
       "projectType": "application",
       "targets": {
         "e2e": {
           "executor": "@nrwl/cypress:cypress",
           "options": {
-            "cypressConfig": "apps/connect-4-e2e/cypress.json",
-            "tsConfig": "apps/connect-4-e2e/tsconfig.e2e.json",
-            "devServerTarget": "connect-4:serve"
+            "cypressConfig": "apps/connect-the-tokens-game-e2e/cypress.json",
+            "tsConfig": "apps/connect-the-tokens-game-e2e/tsconfig.e2e.json",
+            "devServerTarget": "connect-the-tokens-game:serve"
           },
           "configurations": {
-            "production": { "devServerTarget": "connect-4:serve:production" }
+            "production": {
+              "devServerTarget": "connect-the-tokens-game:serve:production"
+            }
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["apps/connect-4-e2e/**/*.{js,ts}"] }
-        }
-      }
-    },
-    "types": {
-      "root": "libs/types",
-      "sourceRoot": "libs/types/src",
-      "projectType": "library",
-      "targets": {
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/types/**/*.ts"] }
-        }
-      }
-    },
-    "game-logic": {
-      "root": "libs/game-logic",
-      "sourceRoot": "libs/game-logic/src",
-      "projectType": "library",
-      "targets": {
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/game-logic/**/*.ts"] }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/game-logic"],
           "options": {
-            "jestConfig": "libs/game-logic/jest.config.js",
-            "passWithNoTests": true
+            "lintFilePatterns": [
+              "apps/connect-the-tokens-game-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -207,6 +187,46 @@
             "config": { "configFolder": "libs/wrapper/.storybook" }
           },
           "configurations": { "ci": { "quiet": true } }
+        }
+      }
+    },
+    "types": {
+      "root": "libs/types",
+      "sourceRoot": "libs/types/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/types/**/*.{ts,tsx,js,jsx}"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/types"],
+          "options": {
+            "jestConfig": "libs/types/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "game-logic": {
+      "root": "libs/game-logic",
+      "sourceRoot": "libs/game-logic/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/game-logic/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/game-logic"],
+          "options": {
+            "jestConfig": "libs/game-logic/jest.config.js",
+            "passWithNoTests": true
+          }
         }
       }
     }

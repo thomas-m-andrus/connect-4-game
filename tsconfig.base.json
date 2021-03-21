@@ -15,10 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@connect-4-game/types": ["libs/types/src/index.ts"],
-      "@connect-4-game/game-logic": ["libs/game-logic/src/index.ts"],
-      "@connect-4-game/ui": ["libs/ui/src/index.ts"],
-      "@connect-4-game/wrapper": ["libs/wrapper/src/index.ts"]
+      "@connect-the-tokens-game/ui": ["libs/ui/src/index.ts"],
+      "@connect-the-tokens-game/wrapper": ["libs/wrapper/src/index.ts"],
+      "@connect-the-tokens-game/types": ["libs/types/src/index.ts"],
+      "@connect-the-tokens-game/game-logic": ["libs/game-logic/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -5,7 +5,7 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "parserOptions": {
-        "project": ["apps/connect-4/tsconfig.*?.json"]
+        "project": ["apps/connect-the-tokens-game/tsconfig.*?.json"]
       },
       "rules": {}
     },

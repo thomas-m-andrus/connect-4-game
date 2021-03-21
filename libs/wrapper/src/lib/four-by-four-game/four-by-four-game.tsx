@@ -1,16 +1,16 @@
 import React, { useReducer, useEffect, useState } from 'react';
-import { Board, Frame } from '@connect-4-game/ui';
+import { Board, Frame } from '@connect-the-tokens-game/ui';
 import {
   FourByFourGameReducer,
   actionCreator,
-} from '@connect-4-game/game-logic';
+} from '@connect-the-tokens-game/game-logic';
 import './four-by-four-game.module.scss';
 import {
   OccupiedState,
   FooterState,
   GameType,
   GamePhase,
-} from '@connect-4-game/types';
+} from '@connect-the-tokens-game/types';
 import {
   restart,
   determineNextFooterState,

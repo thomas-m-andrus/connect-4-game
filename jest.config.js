@@ -1,8 +1,9 @@
 module.exports = {
   projects: [
-    '<rootDir>/apps/connect-4',
-    '<rootDir>/libs/game-logic',
+    '<rootDir>/apps/connect-the-tokens-game',
     '<rootDir>/libs/ui',
     '<rootDir>/libs/wrapper',
+    '<rootDir>/libs/types',
+    '<rootDir>/libs/game-logic',
   ],
 };
