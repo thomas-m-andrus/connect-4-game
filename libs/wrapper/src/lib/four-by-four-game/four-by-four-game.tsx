@@ -9,6 +9,7 @@ import {
   OccupiedState,
   FooterState,
   GameType,
+  GamePhase,
 } from '@connect-4-game/types';
 import {
   restart,
@@ -18,6 +19,7 @@ import {
   getBoardMessage,
   initial,
 } from './utils';
+import axios from 'axios';
 
 export function FourByFourGame() {
   const [state, dispatch] = useReducer(FourByFourGameReducer, initial);
@@ -44,6 +46,30 @@ export function FourByFourGame() {
       dispatch(actionCreator.restartGame());
     }
   }, [footer.gameType]);
+  useEffect(() => {
+    if (
+      state.gamePhase === GamePhase.MID &&
+      (footer.gameType === GameType.AI_VS_AI ||
+        (footer.gameType === GameType.PLAYER_VS_AI &&
+          footer.playerVsAIAssignment !== playerTurn))
+    ) {
+      axios
+        .get(
+          `https://w0ayb2ph1k.execute-api.us-west-2.amazonaws.com/production?moves=${JSON.stringify(
+            state.history
+          )}`
+        )
+        .then(({ data }) => {
+          dispatch(actionCreator.takeTurn(playerTurn, data[data.length - 1]));
+        });
+    }
+  }, [
+    state.history,
+    footer.gameType,
+    playerTurn,
+    footer.playerVsAIAssignment,
+    state.gamePhase,
+  ]);
   return (
     <Frame
       buttons={footer.buttons}
