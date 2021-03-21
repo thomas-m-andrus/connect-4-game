@@ -8,24 +8,27 @@
     "nx.json": "*"
   },
   "affected": { "defaultBase": "master" },
-  "npmScope": "connect-4-game",
+  "npmScope": "connect-the-tokens-game",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
         "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "ODhlMDVlOWQtMjRmMC00YjM4LTkyOTgtYzFmMjU5NjM3MDRjfHJlYWQtd3JpdGU=",
+        "accessToken": "NGRhZWY1MTQtZDNjYy00MGQ3LTgzNDEtYjA5MzMyOWRkNDk4fHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true
       }
     }
   },
   "projects": {
-    "connect-4": { "tags": [] },
-    "connect-4-e2e": { "tags": [], "implicitDependencies": ["connect-4"] },
-    "types": { "tags": [] },
-    "game-logic": { "tags": [] },
+    "connect-the-tokens-game": { "tags": [] },
+    "connect-the-tokens-game-e2e": {
+      "tags": [],
+      "implicitDependencies": ["connect-the-tokens-game"]
+    },
     "ui": { "tags": [] },
-    "wrapper": { "tags": [] }
+    "wrapper": { "tags": [] },
+    "types": { "tags": [] },
+    "game-logic": { "tags": [] }
   }
 }

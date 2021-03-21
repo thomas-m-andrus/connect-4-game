@@ -3,8 +3,8 @@ import {
   OccupiedState,
   GamePhase,
   FooterState,
-} from '@connect-4-game/types';
-import { GameType } from '@connect-4-game/types';
+  GameType,
+} from '@connect-the-tokens-game/types';
 
 export const getPlayerExactTurn = (state: GameState) =>
   state.history.length === 0 || state.history.length % 2 === 0

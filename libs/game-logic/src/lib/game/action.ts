@@ -1,4 +1,4 @@
-import { OccupiedState } from '@connect-4-game/types';
+import { OccupiedState } from '@connect-the-tokens-game/types';
 
 export enum ActionType {
   TAKE_TURN = 'TAKE_TURN',

@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('connect-4', () => {
+describe('connect-the-tokens-game', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
@@ -8,6 +8,6 @@ describe('connect-4', () => {
     cy.login('my-email@something.com', 'myPassword');
 
     // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome to connect-4!');
+    getGreeting().contains('Welcome to connect-the-tokens-game!');
   });
 });

@@ -1,10 +1,9 @@
 module.exports = {
-  displayName: 'connect-4',
+  displayName: 'types',
   preset: '../../jest.preset.js',
   transform: {
-    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
     '^.+\\.[tj]sx?$': 'babel-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/apps/connect-4',
+  coverageDirectory: '../../coverage/libs/types',
 };

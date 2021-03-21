@@ -1,5 +1,5 @@
 import React from 'react';
-import { TokenProps, OccupiedState } from '@connect-4-game/types';
+import { TokenProps, OccupiedState } from '@connect-the-tokens-game/types';
 
 import './token.module.scss';
 

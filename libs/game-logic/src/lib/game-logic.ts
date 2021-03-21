@@ -7,7 +7,7 @@ import {
   GameErrorMessage,
   GameTurnTakenMessage,
   Coordinate,
-} from '@connect-4-game/types';
+} from '@connect-the-tokens-game/types';
 
 export const getColumnLocation = (orbit: ColOrbit, start: number): number => {
   const moveTo: Record<ColOrbit, number> = {

@@ -17,7 +17,7 @@ import {
   Board,
   GameErrorMessage,
   GameTurnTakenMessage,
-} from '@connect-4-game/types';
+} from '@connect-the-tokens-game/types';
 
 describe('gameLogic', () => {
   describe('getColumnLocation', () => {

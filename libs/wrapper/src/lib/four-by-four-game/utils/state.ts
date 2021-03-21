@@ -1,5 +1,5 @@
-import { GameState, GamePhase } from '@connect-4-game/types';
-import { createEmptyFourByFourBoard } from '@connect-4-game/game-logic';
+import { GameState, GamePhase } from '@connect-the-tokens-game/types';
+import { createEmptyFourByFourBoard } from '@connect-the-tokens-game/game-logic';
 
 export const getBoardMessage = (state: GameState): string | undefined =>
   state.gamePhase === GamePhase.WIN

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Token } from './token';
-import { OccupiedState } from '@connect-4-game/types';
+import { OccupiedState } from '@connect-the-tokens-game/types';
 import { select } from '@storybook/addon-knobs';
 
 export default {
