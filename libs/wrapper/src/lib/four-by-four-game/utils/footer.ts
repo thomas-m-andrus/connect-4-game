@@ -36,3 +36,24 @@ export const midGame = (
   buttons: [buttonLabels['RESTART']],
   playerVsAIAssignment,
 });
+export const determineNextFooterState = (
+  state: FooterState,
+  button: string
+): FooterState => {
+  switch (button) {
+    case buttonLabels['RESTART']:
+      return restart;
+    case buttonLabels['PLAYER_VS_PLAYER']:
+      return midGame(GameType.PLAYER_VS_PLAYER);
+    case buttonLabels['PLAYER_VS_AI']:
+      return playerVsAITurnChoice;
+    case buttonLabels['AI_VS_AI']:
+      return midGame(GameType.AI_VS_AI);
+    case buttonLabels['PLAYER_1']:
+      return midGame(GameType.PLAYER_VS_AI, OccupiedState.PLAYER_1);
+    case buttonLabels['PLAYER_2']:
+      return midGame(GameType.PLAYER_VS_AI, OccupiedState.PLAYER_2);
+    default:
+      return state;
+  }
+};
